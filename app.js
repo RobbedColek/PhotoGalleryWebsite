@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var user = require('./routes/user.route');
 var photo = require('./routes/photo.route');
 
+
 var app = express();
 
 let dev_db_url = 'mongodb+srv://admin:admin@photogallery-znqyo.gcp.mongodb.net/PhotoGallery?retryWrites=true';
@@ -38,6 +39,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/', indexRouter);
 app.use('/user', user);
 app.use('/photo', photo);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
