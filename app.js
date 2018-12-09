@@ -13,7 +13,8 @@ var photo = require('./routes/photo.route');
 
 var app = express();
 
-let dev_db_url = 'mongodb+srv://admin:admin@photogallery-znqyo.gcp.mongodb.net/PhotoGallery?retryWrites=true';
+// Connect to database using file containing credentials
+var dev_db_url = require('./database.pass');
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, {
     useNewUrlParser: true
