@@ -22,14 +22,16 @@ exports.photo_upload = function (req, res) {
 };
 
 exports.add_comment = function (req, res) {
-   Photo.findByIdAndUpdate(req.params.id, { $push: { comments: req.body }},function (err, photo) {
+    Photo.findByIdAndUpdate(req.params.id, { $push: { "comments": {user_id: req.body.user_id, comment: req.body.comment,
+                isVisible: req.body.isVisible}}}, {safe: true, upsert: true, new: true}, function (err) {
         if (err) return next(err);
         res.send('Comment added');
     })
 };
 
 exports.add_rating = function (req, res) {
-    Photo.findByIdAndUpdate(req.params.id, { $push: { rating: req.body }},function (err, photo) {
+    Photo.findByIdAndUpdate(req.params.id, { $push: { "ratings": {user_id: req.body.user_id, rating: req.body.rating}}},
+                {safe: true, upsert: true, new: true}, function (err) {
         if (err) return next(err);
         res.send('Rating added');
     })
@@ -37,13 +39,16 @@ exports.add_rating = function (req, res) {
 
 exports.hide_comment = function (req, res) {
     //w ten sposob wyszukuje poprawnie
-    /*Photo.findById(req.params.id, function (err, photo) {
+    Photo.findById(req.params.id, function (err, photo) {
         if (err) return next(err);
-        res.send(photo.comments.find(x => x.id === "5c0c2fb2bcaf214130d59751"));
-    })*/
+        let comment = photo.comments.find(x => x.id === req.body.id);
+        comment.isVisible = req.body.isVisible;
 
-    Photo.findByIdAndUpdate(req.params.id.comments.find(x => x.id === "5c0c2fb2bcaf214130d59751"), { $set: {isVisible: 0} },function (err, photo) {
-        if (err) return next(err);
-        res.send(photo);
+        photo.save(function (err) {
+            if (err) {
+                return next(err);
+            }
+            res.send('Comment hidden');
+        })
     })
 };
