@@ -1,5 +1,6 @@
 const Photo = require('../models/photo.model');
 const gm = require('gm');
+const fs = require('fs');
 
 exports.photo_upload = function (req, res, cb) {
     console.log(req.file);
@@ -55,5 +56,24 @@ exports.hide_comment = function (req, res) {
             }
             res.send('Comment hidden');
         })
+    })
+};
+
+exports.deletePhoto = function (req, res) {
+    Photo.findByIdAndRemove(req.params.id, function (err, photo) {
+        let filename = photo.image;
+
+        fs.unlink(filename, function(err){
+            if(err) return console.log(err);
+            console.log('Removed image');
+        });
+
+        fs.unlink(filename.substring(0, filename.length - 5) + '_thumb.jpg', function(err){
+            if(err) return console.log(err);
+            console.log('Removed thumbnail');
+        });
+
+        if (err) return next(err);
+        res.send('Successfully removed photo');
     })
 };

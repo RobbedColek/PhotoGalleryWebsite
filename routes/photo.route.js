@@ -33,4 +33,6 @@ router.put('/:id/add_rating', photo_controller.add_rating);
 
 router.put('/:id/hide_comment', photo_controller.hide_comment);
 
+router.delete('/:id/deletePhoto', photo_controller.deletePhoto);
+
 module.exports = router;
