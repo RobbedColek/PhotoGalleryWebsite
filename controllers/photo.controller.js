@@ -38,7 +38,6 @@ exports.add_rating = function (req, res) {
 };
 
 exports.hide_comment = function (req, res) {
-    //w ten sposob wyszukuje poprawnie
     Photo.findById(req.params.id, function (err, photo) {
         if (err) return next(err);
         let comment = photo.comments.find(x => x.id === req.body.id);

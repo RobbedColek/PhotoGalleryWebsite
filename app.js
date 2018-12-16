@@ -5,11 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var gm = require('gm');
 
 var indexRouter = require('./routes/index');
 var user = require('./routes/user.route');
 var photo = require('./routes/photo.route');
-
 
 var app = express();
 
