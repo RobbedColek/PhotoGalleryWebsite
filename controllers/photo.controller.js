@@ -1,6 +1,7 @@
 const Photo = require('../models/photo.model');
+const gm = require('gm');
 
-exports.photo_upload = function (req, res) {
+exports.photo_upload = function (req, res, cb) {
     console.log(req.file);
     let photo = new Photo (
         {
@@ -12,6 +13,11 @@ exports.photo_upload = function (req, res) {
             comments: []
         }
     );
+
+    gm(req.file.path).thumb(200, 150, req.file.path.substring(0, req.file.path.length - 5) + '_thumb.jpg', 85, function(err){
+        if (err) return console.dir(arguments)
+        console.log('Generated thumbnail')
+    });
 
     photo.save(function (err) {
         if (err) {
