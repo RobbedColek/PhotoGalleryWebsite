@@ -1,6 +1,7 @@
 const Photo = require('../models/photo.model');
 const gm = require('gm');
 const fs = require('fs');
+const path = require('path');
 
 exports.photo_upload = function (req, res, cb) {
     console.log(req.file);
@@ -25,6 +26,20 @@ exports.photo_upload = function (req, res, cb) {
             return next(err);
         }
         res.send('Photo uploaded successfully')
+    })
+};
+
+exports.getDetails = function (req, res) {
+    Photo.findById(req.params.id, function (err, photo) {
+        if (err) return next(err);
+        res.send(photo);
+    })
+};
+
+exports.getPhoto = function (req, res) {
+    Photo.findById(req.params.id, function (err, photo) {
+        if (err) return next(err);
+        res.sendFile(photo.image, { root: path.join(__dirname, '../') });
     })
 };
 

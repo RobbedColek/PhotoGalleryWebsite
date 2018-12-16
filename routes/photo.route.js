@@ -27,6 +27,10 @@ const photo_controller = require('../controllers/photo.controller');
 
 router.post('/upload', upload.single('image'), photo_controller.photo_upload);
 
+router.get('/:id/getDetails', photo_controller.getDetails);
+
+router.get('/:id/getPhoto', photo_controller.getPhoto);
+
 router.put('/:id/add_comment', photo_controller.add_comment);
 
 router.put('/:id/add_rating', photo_controller.add_rating);
