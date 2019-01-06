@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
+var isAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.redirect('/');
+}
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
@@ -25,18 +30,18 @@ const upload = multer({storage: storage, fileFilter: fileFilter, limits: {fileSi
 
 const photo_controller = require('../controllers/photo.controller');
 
-router.post('/upload', upload.single('image'), photo_controller.photo_upload);
+router.post('/upload', isAuthenticated, upload.single('image'), photo_controller.photo_upload);
 
-router.get('/:id/getDetails', photo_controller.getDetails);
+router.get('/:id/getDetails', isAuthenticated, photo_controller.getDetails);
 
-router.get('/:id/getPhoto', photo_controller.getPhoto);
+router.get('/:id/getPhoto', isAuthenticated, photo_controller.getPhoto);
 
-router.put('/:id/add_comment', photo_controller.add_comment);
+router.put('/:id/add_comment', isAuthenticated, photo_controller.add_comment);
 
-router.put('/:id/add_rating', photo_controller.add_rating);
+router.put('/:id/add_rating', isAuthenticated, photo_controller.add_rating);
 
-router.put('/:id/hide_comment', photo_controller.hide_comment);
+router.put('/:id/hide_comment', isAuthenticated, photo_controller.hide_comment);
 
-router.delete('/:id/deletePhoto', photo_controller.deletePhoto);
+router.delete('/:id/deletePhoto', isAuthenticated, photo_controller.deletePhoto);
 
 module.exports = router;

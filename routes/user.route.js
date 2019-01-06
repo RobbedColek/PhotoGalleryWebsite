@@ -3,12 +3,18 @@ const router = express.Router();
 
 const user_controller = require('../controllers/user.controller');
 
-router.get('/:id', user_controller.user_details);
+var isAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.redirect('/');
+}
 
-router.post('/create', user_controller.user_create);
+router.get('/:id', isAuthenticated, user_controller.user_details);
 
-router.put('/:id/update', user_controller.user_update);
+router.post('/create', isAuthenticated, user_controller.user_create);
 
-router.delete('/:id/delete', user_controller.user_delete);
+router.put('/:id/update', isAuthenticated, user_controller.user_update);
+
+router.delete('/:id/delete', isAuthenticated, user_controller.user_delete);
 
 module.exports = router;
